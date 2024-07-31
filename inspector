@@ -17,7 +17,12 @@ for dir in $TARGET_DIR/*; do
    fi
 
    if [[ $user == "user-*" ]]; then
-     target_quest=$dir/quest/$QUEST_NAME/
-     ./quest-solution/$QUEST_NAME/test-suite $user > ./quest-report/$user/$QUEST_NAME
+     if [ -L "./quest-report/$QUEST_NAME" ]; then
+       mdkir ./quest-report/$QUEST_NAME
+     fi
+
+     test_result=$(./quest-solution/$QUEST_NAME/test-suite $user)
+     echo "$user,$test_result" >> ./quest-report/"$QUEST_NAME.csv"
    fi
 done
+
