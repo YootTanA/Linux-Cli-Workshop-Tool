@@ -1,15 +1,22 @@
 #!/bin/bash
 
 # Default ENV settings
-SEPERATOR=-----------------------------------
 SALT=linux
+USER_CSV=./user.csv
+USER_JSON=./user.json
 
 if [ -z "$1" ]; then
   echo "Please provide a number of generating user."
   exit 1
 fi
-
 COUNT=$1
+
+# Remove user.json since we want to generate a fresh new.
+rm -f $USER_JSON
+
+if [ ! -e "$USER_CSV" ]; then
+   echo "username,password" > users
+fi
 
 for ((i=1; i<=COUNT; i++)); do 
    last_user_number=$(ls /home | grep user | nl | awk -F ' ' 'END {print $1}')
@@ -25,8 +32,22 @@ for ((i=1; i<=COUNT; i++)); do
    sudo chown -R $new_user:$new_user /home/$new_user/*
    
    # Generate user information
-   echo $SEPERATOR >> users
-   echo $new_user >> users
-   echo $new_user_password >> users
-   echo $SEPERATOR >> users
+   echo "$new_user,$new_user_password" >> $USER_CSV
 done
+
+# Generate a user.json
+awk -F, '
+NR==1 {
+    for (i=1; i<=NF; i++) header[i] = $i;
+}
+NR>1 {
+    printf "{";
+    for (i=1; i<=NF; i++) {
+        printf "\"%s\": \"%s\"", header[i], $i;
+        if (i < NF) printf ", ";
+    }
+    print "}";
+} 
+' $USER_CSV > "$USER_JSON.tmp"
+jq -s '.' "$USER_JSON.tmp" > $USER_JSON
+rm -f "$USER_JSON.tmp"
