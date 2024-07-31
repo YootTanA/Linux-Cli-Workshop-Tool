@@ -3,7 +3,8 @@
 # Default ENV settings
 TARGET_DIR=/home
 QUEST_NAME=$1
-REPORT_FILE=./quest-report/"$QUEST_NAME.csv"
+REPORT_CSV_FILE=./quest-report/"$QUEST_NAME.csv"
+REPORT_JSON_FILE=./quest-report/"$QUEST_NAME.json"
 
 if [ -z "$1" ]; then
   echo "Please provide a quest name."
@@ -11,8 +12,10 @@ if [ -z "$1" ]; then
 fi
 
 # Clear previous state
-rm -f $REPORT_FILE
+rm -f $REPORT_CSV_FILE
+rm -f $REPORT_JSON_FILE
 
+echo "username,test_result" >> $REPORT_CSV_FILE
 for dir in $TARGET_DIR/*; do 
    if [ -d "$dir" ]; then
      user=$(basename "$dir")
@@ -22,8 +25,25 @@ for dir in $TARGET_DIR/*; do
 
    if [[ $user == user-* ]]; then
      test_result=$(./quest-solution/$QUEST_NAME/test-suite $user)
-     echo "$user,$test_result" >> $REPORT_FILE
+     echo "$user,$test_result" >> $REPORT_CSV_FILE
    fi
 done
 
-sort -V $REPORT_FILE -o $REPORT_FILE
+sort -V $REPORT_CSV_FILE -o $REPORT_CSV_FILE
+
+awk -F, '
+NR==1 {
+    for (i=1; i<=NF; i++) header[i] = $i;
+}
+NR>1 {
+    printf "{";
+    for (i=1; i<=NF; i++) {
+        printf "\"%s\": \"%s\"", header[i], $i;
+        if (i < NF) printf ", ";
+    }
+    print "}";
+} 
+' $REPORT_CSV_FILE > $REPORT_JSON_FILE
+jq -s '.' $REPORT_JSON_FILE > $REPORT_JSON_FILE
+
+
