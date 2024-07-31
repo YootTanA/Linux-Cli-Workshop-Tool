@@ -15,7 +15,7 @@ COUNT=$1
 rm -f $USER_JSON
 
 if [ ! -e "$USER_CSV" ]; then
-   echo "username,password" > users
+   echo "username,password" > $USER_CSV
 fi
 
 for ((i=1; i<=COUNT; i++)); do 
