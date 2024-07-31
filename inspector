@@ -10,13 +10,14 @@ if [ -z "$1" ]; then
 fi
 
 for dir in $TARGET_DIR/*; do 
-   target_quest=$dir/quest/$QUEST_NAME/
-
    if [ -d "$dir" ]; then
      user=$(basename "$dir")
    else
      break
    fi
 
-   ./quest-solution/$QUEST_NAME/test-suite $user > ./quest-report/$user/$QUEST_NAME
+   if [[ $user == "user-*" ]]; then
+     target_quest=$dir/quest/$QUEST_NAME/
+     ./quest-solution/$QUEST_NAME/test-suite $user > ./quest-report/$user/$QUEST_NAME
+   fi
 done
