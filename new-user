@@ -24,8 +24,6 @@ for ((i=1; i<=COUNT; i++)); do
    sudo cp -r ./starter-pack/* /home/$new_user/
    sudo chown -R $new_user:$new_user /home/$new_user/*
    
-   mkdir ./quest-report/$new_user
-   
    # Generate user information
    echo $SEPERATOR >> users
    echo $new_user >> users
