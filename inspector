@@ -17,7 +17,7 @@ fi
 rm -f $REPORT_CSV
 rm -f $REPORT_JSON
 
-echo "username,test_result" > $REPORT_CSV
+echo "username,testResult" > $REPORT_CSV
 for dir in $TARGET_DIR/*; do 
    if [ -d "$dir" ]; then
      user=$(basename "$dir")
