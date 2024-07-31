@@ -3,8 +3,10 @@
 # Default ENV settings
 TARGET_DIR=/home
 QUEST_NAME=$1
-REPORT_CSV_FILE=./quest-report/"$QUEST_NAME.csv"
-REPORT_JSON_FILE=./quest-report/"$QUEST_NAME.json"
+REPORT_CSV=./quest-report/"$QUEST_NAME.csv"
+REPORT_JSON=./quest-report/"$QUEST_NAME.json"
+
+VISUALISER_REPORT_JSON=./visualizer/database/"$QUEST_NAME-report.json"
 
 if [ -z "$1" ]; then
   echo "Please provide a quest name."
@@ -12,10 +14,10 @@ if [ -z "$1" ]; then
 fi
 
 # Clear previous state
-rm -f $REPORT_CSV_FILE
-rm -f $REPORT_JSON_FILE
+rm -f $REPORT_CSV
+rm -f $REPORT_JSON
 
-echo "username,test_result" > $REPORT_CSV_FILE
+echo "username,test_result" > $REPORT_CSV
 for dir in $TARGET_DIR/*; do 
    if [ -d "$dir" ]; then
      user=$(basename "$dir")
@@ -25,12 +27,12 @@ for dir in $TARGET_DIR/*; do
 
    if [[ $user == user-* ]]; then
      test_result=$(./quest-solution/$QUEST_NAME/test-suite $user)
-     echo "$user,$test_result" >> $REPORT_CSV_FILE
+     echo "$user,$test_result" >> $REPORT_CSV
    fi
 done
 
 # Report in sorted CSV format
-sort -V $REPORT_CSV_FILE -o $REPORT_CSV_FILE
+sort -V $REPORT_CSV -o $REPORT_CSV
 
 # Report in JSON format
 awk -F, '
@@ -45,6 +47,8 @@ NR>1 {
     }
     print "}";
 } 
-' $REPORT_CSV_FILE > "$REPORT_JSON_FILE.tmp"
-jq -s '.' "$REPORT_JSON_FILE.tmp" > $REPORT_JSON_FILE
-rm -f "$REPORT_JSON_FILE.tmp"
+' $REPORT_CSV > "$REPORT_JSON.tmp"
+jq -s '.' "$REPORT_JSON.tmp" > $REPORT_JSON
+rm -f "$REPORT_JSON.tmp"
+
+ln $REPORT_JSON > $VISUALISER_REPORT_JSON

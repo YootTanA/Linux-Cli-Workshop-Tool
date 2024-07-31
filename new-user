@@ -2,8 +2,10 @@
 
 # Default ENV settings
 SALT=linux
-USER_CSV=./user.csv
-USER_JSON=./user.json
+USER_CSV=./users/user.csv
+USER_JSON=./users/user.json
+
+VISUALISER_USER_JSON=./visualizer/database/user.json
 
 if [ -z "$1" ]; then
   echo "Please provide a number of generating user."
@@ -51,3 +53,5 @@ NR>1 {
 ' $USER_CSV > "$USER_JSON.tmp"
 jq -s '.' "$USER_JSON.tmp" > $USER_JSON
 rm -f "$USER_JSON.tmp"
+
+ln $USER_JSON $VISUALISER_DATABASE_USER
