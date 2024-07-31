@@ -4,9 +4,14 @@
 TARGET_DIR=/home
 QUEST_NAME=$1
 
-USERS=$(ls $TARGET_DIR)
+for dir in $TARGET_DIR/*; do 
+   target_quest=$dir/quest/$QUEST_NAME/
 
-for path in $TARGET_DIR/*; do 
-   target_quest=$path/quest/$QUEST_NAME/
-   ./quest-solution/$QUEST_NAME/test-suite > ./quest-report/$USER/$QUEST_NAME
+   if [ -d "$dir" ]; then
+     user=$(basename "$dir")
+   else
+     break
+   fi
+
+   ./quest-solution/$QUEST_NAME/test-suite > ./quest-report/$user/$QUEST_NAME
 done
