@@ -14,6 +14,8 @@ NEW_USER_PASSWORD=$(echo "SEED" | openssl passwd -1 -stdin)
 # ONLY STDERR can be seen in this command.
 sudo useradd -m -p $NEW_USER_PASSWORD $NEW_USER > /dev/null 2>&1
 
+mkdir ./quest-report/$NEW_USER
+
 # Generate user information
 echo $SEPERATOR >> users
 echo $NEW_USER >> users

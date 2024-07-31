@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Default ENV settings
+TARGET_DIR=/home
+QUEST_NAME=$1
+
+USERS=$(ls $TARGET_DIR)
+
+for path in $TARGET_DIR/*; do 
+   target_quest=$path/quest/$QUEST_NAME/
+   ./quest-solution/$QUEST_NAME/test-suite > ./quest-report/$USER/$QUEST_NAME
+done
