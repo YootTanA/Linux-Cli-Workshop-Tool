@@ -4,6 +4,11 @@
 TARGET_DIR=/home
 QUEST_NAME=$1
 
+if [ -z "$1" ]; then
+  echo "need to insert a quest name!!!"
+  exit 1
+fi
+
 for dir in $TARGET_DIR/*; do 
    target_quest=$dir/quest/$QUEST_NAME/
 
@@ -13,5 +18,5 @@ for dir in $TARGET_DIR/*; do
      break
    fi
 
-   ./quest-solution/$QUEST_NAME/test-suite > ./quest-report/$user/$QUEST_NAME
+   ./quest-solution/$QUEST_NAME/test-suite $user > ./quest-report/$user/$QUEST_NAME
 done
