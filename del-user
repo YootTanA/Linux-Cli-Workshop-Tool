@@ -2,3 +2,4 @@
 
 ls /home | grep user | xargs -n 1 sudo deluser --remove-home
 rm -rf ./quest-report/*
+rm -f ./users
