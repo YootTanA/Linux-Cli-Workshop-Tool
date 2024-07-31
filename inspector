@@ -5,7 +5,7 @@ TARGET_DIR=/home
 QUEST_NAME=$1
 
 if [ -z "$1" ]; then
-  echo "need to insert a quest name!!!"
+  echo "Please provide a quest name."
   exit 1
 fi
 
