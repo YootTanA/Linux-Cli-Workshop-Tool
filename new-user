@@ -20,6 +20,10 @@ for ((i=1; i<=COUNT; i++)); do
    # ONLY STDERR can be seen in this command.
    sudo useradd -m -p $new_user_password $new_user > /dev/null 2>&1
    
+   # Giving a starter pack for new user
+   sudo cp -r ./starter-pack/* /home/$new_user/
+   sudo chown -R $new_user:$new_user /home/$new_user/*
+   
    mkdir ./quest-report/$new_user
    
    # Generate user information
