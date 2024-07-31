@@ -4,13 +4,14 @@
 TARGET_DIR=/home
 QUEST_NAME=$1
 REPORT_FILE=./quest-report/"$QUEST_NAME.csv"
-TMP_REPORT_FILE=./quest-report/"TMP-$QUEST_NAME.csv"
-
 
 if [ -z "$1" ]; then
   echo "Please provide a quest name."
   exit 1
 fi
+
+# Clear previous state
+rm -f $REPORT_FILE
 
 for dir in $TARGET_DIR/*; do 
    if [ -d "$dir" ]; then
@@ -25,6 +26,4 @@ for dir in $TARGET_DIR/*; do
    fi
 done
 
-sort -V $REPORT_FILE > $TMP_REPORT_FILE
-mv $TMP_REPORT_FILE $REPORT_FILE
-
+sort -V $REPORT_FILE -o $REPORT_FILE
