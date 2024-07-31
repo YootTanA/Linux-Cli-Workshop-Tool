@@ -15,7 +15,7 @@ fi
 rm -f $REPORT_CSV_FILE
 rm -f $REPORT_JSON_FILE
 
-echo "username,test_result" >> $REPORT_CSV_FILE
+echo "username,test_result" > $REPORT_CSV_FILE
 for dir in $TARGET_DIR/*; do 
    if [ -d "$dir" ]; then
      user=$(basename "$dir")
@@ -29,8 +29,10 @@ for dir in $TARGET_DIR/*; do
    fi
 done
 
+# Report in sorted CSV format
 sort -V $REPORT_CSV_FILE -o $REPORT_CSV_FILE
 
+# Report in JSON format
 awk -F, '
 NR==1 {
     for (i=1; i<=NF; i++) header[i] = $i;
@@ -43,7 +45,6 @@ NR>1 {
     }
     print "}";
 } 
-' $REPORT_CSV_FILE > $REPORT_JSON_FILE
-jq -s '.' $REPORT_JSON_FILE > $REPORT_JSON_FILE
-
-
+' $REPORT_CSV_FILE > "$REPORT_JSON_FILE.tmp"
+jq -s '.' "$REPORT_JSON_FILE.tmp" > $REPORT_JSON_FILE
+rm -f "$REPORT_JSON_FILE.tmp"
