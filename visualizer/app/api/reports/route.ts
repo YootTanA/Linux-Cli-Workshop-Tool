@@ -3,13 +3,9 @@ import { promises as fs } from "fs";
 
 let content = "";
 const quest = process.env.NEXT_PUBLIC_QUEST;
-const filePath = `database/${quest}.json`;
+const filePath = `database/${quest}-report.json`;
 
 const readFile = async () => {
-  if (quest === "") {
-    return {};
-  }
-
   try {
     content = await fs.readFile(filePath, "utf8");
   } catch (err) {
