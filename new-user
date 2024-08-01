@@ -2,8 +2,8 @@
 
 # Default ENV settings
 SALT=linux
-USER_CSV=./users/user.csv
-USER_JSON=./users/user.json
+USER_CSV=./generated-users/user.csv
+USER_JSON=./generated-users/user.json
 
 VISUALISER_USER_JSON=./visualizer/database/user.json
 

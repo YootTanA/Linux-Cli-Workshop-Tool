@@ -5,5 +5,5 @@ ls /home | grep user | xargs -n 1 sudo deluser --remove-home
 unlink ./visualizer/database/*
 
 rm -rf ./quest-report/*
-rm -rf ./user/*
+rm -rf ./generated-users/*
 
