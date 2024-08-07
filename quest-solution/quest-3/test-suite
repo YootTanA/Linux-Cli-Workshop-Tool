@@ -1,0 +1,34 @@
+#!/bin/bash
+
+USER=$1
+QUEST=quest-3
+ANSWERS=answers
+CURRENT_DIR=$(dirname "$(realpath "$0")")
+
+
+is_first_10_animal_correct=0
+is_last_10_animal_correct=0
+
+first_10_animal_path=/home/$USER/$QUEST/$ANSWERS/first_10_animals.csv
+if [ -e  "$first_10_animal_path" ]; then
+
+  cmp $CURRENT_DIR/first_10_animals.csv $first_10_animal_path 2> /dev/null
+  if [ ! $? -eq 1 ]; then
+    is_first_10_animal_correct=1
+  fi
+fi
+
+last_10_animal_path=/home/$USER/$QUEST/$ANSWERS/last_10_animals.csv
+if [ -e  "$last_10_animal_path" ]; then
+
+  cmp $CURRENT_DIR/last_10_animals.csv $last_10_animal_path 2> /dev/null
+  if [ ! $? -eq 1 ]; then
+    is_last_10_animal_correct=1
+  fi
+fi
+
+if [ $is_first_10_animal_correct = 1 ] && [ $is_last_10_animal_correct = 1 ]; then
+  echo PASSED
+else
+  echo FAILED
+fi

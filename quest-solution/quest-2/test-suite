@@ -1,0 +1,35 @@
+#!/bin/bash
+
+USER=$1
+QUEST=quest-2
+ANSWERS=answers
+CURRENT_DIR=$(dirname "$(realpath "$0")")
+
+
+is_hello_linux_exist=0
+is_hello_linux_content_correct=0
+is_fake_name_changed=0
+
+hello_linux_path=/home/$USER/$QUEST/$ANSWERS/hello_linux
+if [ -e  "$hello_linux_path" ]; then
+  is_hello_linux_exist=1
+
+  cmp $CURRENT_DIR/hello_linux $hello_linux_path 2> /dev/null
+  if [ ! $? -eq 1 ]; then
+    is_hello_linux_content_correct=1
+  fi
+fi
+
+real_file_path=/home/$USER/$QUEST/$ANSWERS/real
+fake_file_path=/home/$USER/$QUEST/$ANSWERS/fake
+if [ -e "$real_file_path" ]; then
+  if [ ! -e "$fake_file_path" ]; then 
+    is_fake_name_changed=1
+  fi
+fi
+
+if [ $is_hello_linux_exist = 1 ] && [ $is_hello_linux_content_correct = 1 ] && [ $is_fake_name_changed = 1 ]; then
+  echo PASSED
+else
+  echo FAILED
+fi
