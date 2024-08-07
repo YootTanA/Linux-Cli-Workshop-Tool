@@ -1,0 +1,9 @@
+#!/bin/bash
+
+quest=$1
+
+while true; do
+  ./inspector $quest
+  echo "NEXT_PUBLIC_QUEST=$quest" > ./visualizer/.env
+  sleep 2
+done

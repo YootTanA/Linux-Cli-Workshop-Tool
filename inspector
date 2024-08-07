@@ -52,3 +52,5 @@ jq -s '.' "$REPORT_JSON.tmp" > $REPORT_JSON
 rm -f "$REPORT_JSON.tmp"
 
 cat $REPORT_JSON > $VISUALISER_REPORT_JSON
+
+echo "Finished Generated Report: $(date)"
