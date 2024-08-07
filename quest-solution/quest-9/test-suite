@@ -1,25 +1,22 @@
 #!/bin/bash
 
 USER=$1
-QUEST=quest-1
+QUEST=quest-9
 ANSWERS=answers
 
 
-is_hello_linux_exist=0
-is_hidden_file_removed=0
+is_all_answers_files_perm_correct=1
 
-hello_linux_path=/home/$USER/$QUEST/$ANSWERS/hello_linux
-if [ -e  "$hello_linux_path" ]; then
-  is_hello_linux_exist=1
+answers_path=/home/$USER/$QUEST/$ANSWERS
+if [ -e "$answers_path" ]; then
+  for p in $(ls -l $answers_path | awk 'NR > 1 {print $1}'); do 
+    if [ ! "$p" = "-rwxrw----" ]; then
+      is_all_answers_files_perm_correct=0
+    fi
+  done
 fi
 
-hidden_file_path=/home/$USER/$QUEST/$ANSWERS/.hidden
-if [ ! -e "$hidden_file_path" ]; then
-  is_hidden_file_removed=1
-fi
-
-
-if [ $is_hello_linux_exist = 1 ] && [ $is_hidden_file_removed = 1 ]; then
+if [ $is_all_answers_files_perm_correct = 1 ]; then
   echo PASSED
 else
   echo FAILED
