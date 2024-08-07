@@ -1,27 +1,34 @@
 #!/bin/bash
 
 USER=$1
-QUEST=quest-1
+QUEST=quest-7
 ANSWERS=answers
+CURRENT_DIR=$(dirname "$(realpath "$0")")
 
+is_bird_animals_file_exist=0
+is_sorted_bird_animals_file_exist=0
 
-is_hello_linux_exist=0
-is_hidden_file_removed=0
+bird_animals_path=/home/$USER/$QUEST/$ANSWERS/bird_animals.csv
+if [ -e  "$bird_animals_path" ]; then
 
-hello_linux_path=/home/$USER/$QUEST/$ANSWERS/hello_linux
-if [ -e  "$hello_linux_path" ]; then
-  is_hello_linux_exist=1
+  cmp $CURRENT_DIR/bird_animals.csv $bird_animals_path 2> /dev/null
+  if [ ! $? -eq 1 ]; then
+    is_bird_animals_file_exist=1
+  fi
 fi
 
-hidden_file_path=/home/$USER/$QUEST/$ANSWERS/.hidden
-if [ ! -e "$hidden_file_path" ]; then
-  is_hidden_file_removed=1
+sorted_bird_animals_path=/home/$USER/$QUEST/$ANSWERS/sorted_bird_animals.csv
+if [ -e  "$sorted_bird_animals_path" ]; then
+
+  cmp $CURRENT_DIR/sorted_bird_animals.csv $sorted_bird_animals_path 2> /dev/null
+  if [ ! $? -eq 1 ]; then
+    is_sorted_bird_animals_file_exist=1
+  fi
 fi
 
 
-if [ $is_hello_linux_exist = 1 ] && [ $is_hidden_file_removed = 1 ]; then
+if [ $is_bird_animals_file_exist = 1 ] && [ $is_sorted_bird_animals_file_exist = 1 ]; then
   echo PASSED
 else
   echo FAILED
 fi
-
