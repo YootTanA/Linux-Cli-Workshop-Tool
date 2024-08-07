@@ -1,25 +1,18 @@
 #!/bin/bash
 
 USER=$1
-QUEST=quest-1
+QUEST=quest-10
 ANSWERS=answers
 
 
-is_hello_linux_exist=0
-is_hidden_file_removed=0
+is_readme_exist=0
 
-hello_linux_path=/home/$USER/$QUEST/$ANSWERS/hello_linux
-if [ -e  "$hello_linux_path" ]; then
-  is_hello_linux_exist=1
+readme_path=/home/$USER/$QUEST/$ANSWERS/readme
+if [ -e  "$readme_path" ]; then
+  is_readme_exist=1
 fi
 
-hidden_file_path=/home/$USER/$QUEST/$ANSWERS/.hidden
-if [ ! -e "$hidden_file_path" ]; then
-  is_hidden_file_removed=1
-fi
-
-
-if [ $is_hello_linux_exist = 1 ] && [ $is_hidden_file_removed = 1 ]; then
+if [ $is_readme_exist = 1 ]; then
   echo PASSED
 else
   echo FAILED
